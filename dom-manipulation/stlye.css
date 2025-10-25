@@ -1,0 +1,39 @@
+body {
+    background-color: white;
+    font-family: Arial, sans-serif;
+    width:100%;
+    display: block;
+    align-items: center;
+    text-align: center;
+}
+input{
+    text-align: center;
+    margin: 5px ;
+    border: 1px solid darkgrey;
+    border-radius: 4px;
+}
+button{
+    border: none ;
+    color: aliceblue;
+    background-color: black;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 10px;
+    margin: 4px;
+    transition: background-color 0.1s ease;
+}
+
+button:hover{
+    background-color: blue;
+
+}
+
+#quoteDisplay{
+    width: 50%;
+    border: 1px solid gainsboro;
+    border-radius: 10px;
+    margin: auto;
+    padding-bottom: 10px;
+    background-color: whitesmoke;
+    box-shadow: 20px;
+}

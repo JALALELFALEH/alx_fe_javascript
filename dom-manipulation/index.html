@@ -4,20 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Quote Generator</title>
+    <link rel="stylesheet" href="stlye.css">
 </head>
 <body>
     <h1>Dynamic Quote Generator</h1>
-    <div id="quoteDisplay"></div>
+    <div id="quoteDisplay">
+
+    </div>
     <br>
     <button id="newQuote">Show New Quote</button>
-
+    <br>
     <form id="form">
         <div>
             <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+            <br>
             <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+            <br>
             <button type="submit">Add Quote</button>
         </div>
     </form>
+    <br>
+    <button id="exportBtn">Export Quotes</button>
+    <br>
+    <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+
     <script src="script.js"></script>
 </body>
 </html>

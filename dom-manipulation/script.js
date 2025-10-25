@@ -21,7 +21,7 @@ function showRandomQuote() {
 
     // Set the content
     quoteText.textContent = `"${randomQuote.text}"`;
-    quoteCategory.textContent = `-${randomQuote.category}`;
+    quoteCategory.textContent = `- ${randomQuote.category}`;
 
     // Clear previous quote and add new one
     quoteContainer.innerHTML = '';
@@ -30,35 +30,22 @@ function showRandomQuote() {
 };
 
 function createAddQuoteForm() {
-    const form = document.createElement('form');
-    const textInput = document.createElement('input');
-    const categoryInput = document.createElement('input');
-    const submitButton = document.createElement('button');
-
-    textInput.placeholder = "Enter quote text";
-    textInput.type = "text";
-    categoryInput.placeholder = "Enter category";
-    categoryInput.type = "text";
-    submitButton.textContent = "Add Quote";
-
-    form.appendChild(textInput);
-    form.appendChild(categoryInput);
-    form.appendChild(submitButton);
-
-    document.body.appendChild(form);
+    const form = document.getElementById('form');
+    const textInput = document.getElementById('newQuoteText');
+    const categoryInput = document.getElementById('newQuoteCategory');
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        newQuote = {
+        const newQuote = {
             text: textInput.value,
             category: categoryInput.value,
         };
 
         quotes.push(newQuote);
 
-        textInput = '';
-        categoryInput = '';
+        textInput.value = '';
+        categoryInput.value = '';
 
         alert('Quote added successfully!');
     });

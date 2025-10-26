@@ -8,14 +8,14 @@
 </head>
 <body>
     <h1>Dynamic Quote Generator</h1>
-    <div id="quoteDisplay">
-
-    </div>
-    <br>
-    <select id="categoryFilter" onchange="filterQuotes()">
+        <select id="categoryFilter" onchange="filterQuotes()">
         <option value="all">All Categories</option>
     <!-- Dynamically populated categories -->
     </select>
+    <br>
+    <div id="quoteDisplay">
+
+    </div>
     <br>
     <button id="newQuote">Show New Quote</button>
     <br>
@@ -29,9 +29,12 @@
         </div>
     </form>
     <br>
-    <button id="exportBtn">Export Quotes</button>
-    <br>
-    <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+    <div id="export-import">
+        <button id="exportBtn">Export Quotes</button>
+        <hr>
+        <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+    </div>
+
 
     <script src="script.js"></script>
 </body>

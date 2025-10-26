@@ -29,7 +29,7 @@ function showRandomQuote() {
 };
 
 // Function to add new quote
-function AddQuoteForm() {
+function createAddQuoteForm() {
     const form = document.getElementById('form');
     const textInput = document.getElementById('newQuoteText');
     const categoryInput = document.getElementById('newQuoteCategory');
@@ -163,7 +163,7 @@ function filterQuotes() {
 
 
 populateCategories(); // Populate categories dropdown when page loads
-AddQuoteForm(); // Set up form for adding new quotes
+createAddQuoteForm(); // Set up form for adding new quotes
 
 // Event listeners for buttons and inputs
 newQuoteBtn.addEventListener('click', function() {

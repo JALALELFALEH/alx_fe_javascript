@@ -14,17 +14,20 @@ input{
 }
 button{
     border: none ;
-    color: aliceblue;
-    background-color: black;
+    color: black;
+    background-color: aliceblue;
+    border: 1px solid gray;
     border-radius: 8px;
     cursor: pointer;
     padding: 10px;
     margin: 4px;
     transition: background-color 0.1s ease;
+    font-weight: bold;
 }
 
 button:hover{
-    background-color: blue;
+    background-color: black;
+    color: aliceblue;
 
 }
 
@@ -36,4 +39,17 @@ button:hover{
     padding-bottom: 10px;
     background-color: whitesmoke;
     box-shadow: 20px;
+}
+
+form{
+    width: fit-content;
+    display: inline-block;
+    border: 1px solid gray;
+    border-radius: 4px;
+    background-color: whitesmoke;
+    margin: 20px;
+}
+#export-import{
+    display: inline-flex;
+    margin: 10px 20px;
 }

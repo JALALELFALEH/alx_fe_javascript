@@ -115,26 +115,17 @@ function importFromJsonFile(event) {
 function populateCategories() {
     const categoryFilter = document.getElementById('categoryFilter');
     
-    // Clear dropdown but keep "All Categories" option
     categoryFilter.innerHTML = '<option value="all">All Categories</option>';
 
-    // Get all unique categories from quotes array
-    const allCategories = [];
-    quotes.forEach(quote => {
-        // Only add category if not already in array
-        if(!allCategories.includes(quote.category)) {
-            allCategories.push(quote.category);
-        }
-    });
+    // Use map to get all categories, then filter for unique ones
+    const allCategories = quotes.map(quote => quote.category).filter((category, index, array) => array.indexOf(category) === index);
     
-    // Add each unique category as an option in dropdown
     allCategories.forEach(category => {
         const option = document.createElement('option');
         option.value = category;
         option.textContent = category;
         categoryFilter.appendChild(option);
     });
-    
 };
 
 // Function to update the displayed quotes based on the selected category

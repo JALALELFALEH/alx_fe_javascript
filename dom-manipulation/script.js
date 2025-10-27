@@ -158,7 +158,213 @@ function filterQuotes() {
     }
 };
 
+// Server simulation - using JSONPlaceholder
+const SERVER_URL = 'https://jsonplaceholder.typicode.com/posts';
 
+// Simple function to get quotes from server
+async function getQuotesFromServer() {
+    try {
+        // Simulate getting data from server
+        const response = await fetch(SERVER_URL);
+        const serverData = await response.json();
+        
+        // Convert server data to our quote format (just for simulation)
+        const serverQuotes = serverData.slice(0, 5).map(item => ({
+            text: item.title,
+            category: "Server Quotes",
+            fromServer: true
+        }));
+        
+        return serverQuotes;
+    } catch (error) {
+        console.log('Could not connect to server, using local data only');
+        return [];
+    }
+}
+
+// Simple function to send quotes to server
+async function sendQuotesToServer(quotes) {
+    try {
+        // Just simulate sending - we don't actually save to JSONPlaceholder
+        await fetch(SERVER_URL, {
+            method: 'POST',
+            body: JSON.stringify(quotes),
+            headers: {
+                'Content-type': 'application/json',
+            },
+        });
+        console.log('Quotes sent to server (simulation)');
+        return true;
+    } catch (error) {
+        console.log('Failed to send to server');
+        return false;
+    }
+}
+
+// Sync data every 30 seconds
+function startSyncing() {
+    // Sync immediately when page loads
+    syncData();
+    
+    // Then sync every 30 seconds
+    setInterval(syncData, 30000);
+}
+
+// Main sync function
+async function syncData() {
+    console.log('Syncing with server...');
+    showSyncMessage('Syncing with server...');
+    
+    // Get quotes from server
+    const serverQuotes = await getQuotesFromServer();
+    
+    // Get our local quotes
+    const localQuotes = quotes;
+    
+    // Merge them - server quotes replace local ones if conflict
+    const mergedQuotes = [...localQuotes];
+    
+    serverQuotes.forEach(serverQuote => {
+        // Check if we already have this quote
+        const existingIndex = mergedQuotes.findIndex(localQuote => 
+            localQuote.text === serverQuote.text
+        );
+        
+        if (existingIndex === -1) {
+            // New quote from server - add it
+            mergedQuotes.push(serverQuote);
+        } else {
+            // Conflict - server version wins
+            mergedQuotes[existingIndex] = serverQuote;
+        }
+    });
+    
+    // Update our quotes
+    quotes = mergedQuotes;
+    saveQuotes();
+    
+    // Send our updated quotes to server (simulation)
+    await sendQuotesToServer(quotes);
+    
+    showSyncMessage('Sync completed!');
+    populateCategories();
+    
+    console.log('Sync completed. Total quotes:', quotes.length);
+}
+
+// Show sync status message
+function showSyncMessage(message) {
+    // Remove old message if exists
+    const oldMessage = document.getElementById('syncMessage');
+    if (oldMessage) {
+        oldMessage.remove();
+    }
+    
+    // Create new message
+    const messageDiv = document.createElement('div');
+    messageDiv.id = 'syncMessage';
+    messageDiv.textContent = message;
+    messageDiv.style.cssText = `
+        background: yellow;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid orange;
+        border-radius: 5px;
+    `;
+    
+    // Add it to the page
+    const quoteDisplay = document.getElementById('quoteDisplay');
+    quoteDisplay.parentNode.insertBefore(messageDiv, quoteDisplay);
+    
+    // Remove message after 3 seconds
+    setTimeout(() => {
+        if (messageDiv.parentNode) {
+            messageDiv.remove();
+        }
+    }, 3000);
+}
+
+// Simple conflict detection and resolution
+function checkForConflicts(localQuotes, serverQuotes) {
+    let conflicts = 0;
+    
+    serverQuotes.forEach(serverQuote => {
+        const localQuote = localQuotes.find(q => q.text === serverQuote.text);
+        if (localQuote && localQuote.category !== serverQuote.category) {
+            conflicts++;
+            console.log(`Conflict found: "${serverQuote.text}"`);
+        }
+    });
+    
+    return conflicts;
+}
+
+// Updated sync function with conflict handling
+async function syncData() {
+    console.log('Syncing with server...');
+    showSyncMessage('Syncing with server...');
+    
+    const serverQuotes = await getQuotesFromServer();
+    const localQuotes = [...quotes]; // Copy of current quotes
+    
+    // Check for conflicts before merging
+    const conflictCount = checkForConflicts(localQuotes, serverQuotes);
+    
+    // Merge - server quotes take priority
+    const mergedQuotes = [...localQuotes];
+    
+    serverQuotes.forEach(serverQuote => {
+        const existingIndex = mergedQuotes.findIndex(localQuote => 
+            localQuote.text === serverQuote.text
+        );
+        
+        if (existingIndex === -1) {
+            // New quote from server
+            mergedQuotes.push(serverQuote);
+        } else {
+            // Server version wins in conflict
+            mergedQuotes[existingIndex] = serverQuote;
+        }
+    });
+    
+    // Update our quotes
+    quotes = mergedQuotes;
+    saveQuotes();
+    
+    // Send to server
+    await sendQuotesToServer(quotes);
+    
+    // Show results
+    showSyncMessage(`Sync completed! ${serverQuotes.length} server quotes processed`);
+    
+    if (conflictCount > 0) {
+        showConflictMessage(conflictCount);
+    }
+    
+    populateCategories();
+    console.log('Sync completed with', conflictCount, 'conflicts resolved');
+}
+
+// Manual sync function
+function manualSync() {
+    syncData();
+}
+
+// Show conflict message to user
+function showConflictMessage(conflictCount) {
+    if (conflictCount > 0) {
+        const conflictDiv = document.createElement('div');
+        conflictDiv.innerHTML = `
+            <div style="background: #ffcccc; padding: 10px; margin: 10px 0; border: 1px solid red; border-radius: 5px;">
+                <strong>Conflict Resolved:</strong> ${conflictCount} quotes were updated from server.
+                <button onclick="this.parentElement.remove()" style="float: right;">X</button>
+            </div>
+        `;
+        
+        const quoteDisplay = document.getElementById('quoteDisplay');
+        quoteDisplay.parentNode.insertBefore(conflictDiv, quoteDisplay);
+    }
+}
 // ========== INITIALIZATION ========== //
 
 
@@ -185,3 +391,5 @@ if(savedFilter) {
     document.getElementById('categoryFilter').value = savedFilter; 
     filterQuotes();
 }
+
+startSyncing();

@@ -162,7 +162,7 @@ function filterQuotes() {
 const SERVER_URL = 'https://jsonplaceholder.typicode.com/posts';
 
 // Simple function to get quotes from server
-async function getQuotesFromServer() {
+async function fetchQuotesFromServer() {
     try {
         // Simulate getting data from server
         const response = await fetch(SERVER_URL);
@@ -216,7 +216,7 @@ async function syncData() {
     showSyncMessage('Syncing with server...');
     
     // Get quotes from server
-    const serverQuotes = await getQuotesFromServer();
+    const serverQuotes = await fetchQuotesFromServer();
     
     // Get our local quotes
     const localQuotes = quotes;
@@ -304,7 +304,7 @@ async function syncData() {
     console.log('Syncing with server...');
     showSyncMessage('Syncing with server...');
     
-    const serverQuotes = await getQuotesFromServer();
+    const serverQuotes = await fetchQuotesFromServer();
     const localQuotes = [...quotes]; // Copy of current quotes
     
     // Check for conflicts before merging

@@ -91,7 +91,8 @@ async function syncQuotes() {
     quotes.length = 0; // Clear array
     quotes.push(...mergedQuotes); // Add all merged quotes
     
-    saveQuotes();
+    // Save merged quotes to local storage (conflict resolution applied)
+    localStorage.setItem('myQuotes', JSON.stringify(quotes));
     
     // Send updated quotes to server
     await sendQuotesToServer(quotes);

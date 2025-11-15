@@ -60,7 +60,7 @@ function checkForConflicts(localQuotes, serverQuotes) {
 }
 
 // Main sync function with conflict handling
-async function syncData() {
+async function syncQuotes() {
     console.log('Syncing with server...');
     showSyncMessage('Syncing with server...');
     
@@ -113,16 +113,16 @@ async function syncData() {
 
 // Manual sync function (triggered by button click)
 function manualSync() {
-    syncData();
+    syncQuotes();
 }
 
 // Start automatic syncing every 30 seconds
 function startSyncing() {
     // Sync immediately when page loads
-    syncData();
+    syncQuotes();
     
     // Then sync every 30 seconds
-    setInterval(syncData, 30000);
+    setInterval(syncQuotes, 30000);
 }
 
 // Show sync status message

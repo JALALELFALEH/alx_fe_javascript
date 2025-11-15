@@ -104,6 +104,9 @@ async function syncQuotes() {
     
     showSyncMessage(`Sync completed! ${newQuotesCount} new quotes added`);
     
+    // Alert user about successful sync
+    alert("Quotes synced with server!");
+    
     if (conflicts.length > 0) {
         showConflictMessage(conflicts);
     }
